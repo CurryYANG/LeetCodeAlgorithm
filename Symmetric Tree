@@ -1,0 +1,59 @@
+#define MAX 1000
+
+class Solution {
+public:
+    int countL=0;
+    int countR=0;
+    bool isSymmetric(TreeNode *root) {
+        TreeNode *L,*R;
+        int i=0;
+        int arrLeft[MAX];
+        int arrRight[MAX];
+        if(root==NULL)
+            return true;
+        L=root->left;
+        R=root->right;
+        BFS(L,arrLeft,1);
+        BFS(R,arrRight,2);
+        
+        if(countL==countR){
+            for(i=0;i<countL;i++){
+                if(arrLeft[i]!=arrRight[i])
+                    return false;
+            }
+            return true;
+        }
+        else
+            return false;
+        
+    }
+    
+    void BFS(TreeNode *root,int arr[],int type){
+        if(root!=NULL){
+            if(type==1){
+                BFS(root->left,arr,1);
+                BFS(root->right,arr,1);
+                arr[countL]=root->val;
+                if(root->left!=NULL&&root->right==NULL)
+                    arr[countL]+=1;
+                if(root->left==NULL&&root->right!=NULL)
+                    arr[countL]-=1; 
+                countL++;
+            }
+            else if(type==2){
+                
+                BFS(root->right,arr,2);
+                BFS(root->left,arr,2);
+                arr[countR]=root->val;
+                if(root->left==NULL&&root->right!=NULL)
+                    arr[countR]+=1;
+                if(root->left!=NULL&&root->right==NULL)
+                    arr[countR]-=1; 
+                countR++;
+            }
+            
+        }
+        else
+            return ;
+    }
+};
