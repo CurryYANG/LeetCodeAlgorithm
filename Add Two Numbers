@@ -1,0 +1,59 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode *addTwoNumbers(ListNode *l1, ListNode *l2) {
+        int isCarryBit=0;
+        ListNode *pointer,*pointer1,*pointer2;
+        int L1len=0;
+        int L2len=0;
+        pointer1=l1;
+        pointer2=l2;
+        while(pointer1) {L1len++;pointer1=pointer1->next;}
+        while(pointer2) {L2len++;pointer2=pointer2->next;}
+        pointer=L1len>=L2len?l1:l2;
+        pointer1=l1;
+        pointer2=l2;
+        while(pointer1&&pointer2){
+            pointer->val=pointer1->val+pointer2->val+isCarryBit;
+            if((pointer->val)/10>=1){
+                pointer->val%=10;
+                isCarryBit=1;
+            }
+            else isCarryBit=0;
+            pointer1=pointer1->next;
+            pointer2=pointer2->next;
+            if(pointer->next==NULL)
+                break;;
+            pointer=pointer->next;
+        }
+        // remember after the iteration, the pointer lication is...
+        if(isCarryBit){
+            if(L1len==L2len){
+                ListNode *newNode=new ListNode(1);
+                pointer->next=newNode;
+            }
+            else {
+                while(pointer){
+                    (pointer->val)+=1;
+                    if(pointer->val>=10&&pointer->next==NULL){
+                        ListNode *node=new ListNode(0);
+                        pointer->next=node;
+                        pointer->val%=10;
+                    }
+                    else if(pointer->val>=10&&pointer->next!=NULL)
+                        pointer->val%=10;
+                    else break;
+                    pointer=pointer->next;
+                }
+            }
+        }
+        return L1len>=L2len?l1:l2;
+    }
+};
