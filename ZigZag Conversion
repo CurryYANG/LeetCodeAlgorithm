@@ -1,0 +1,23 @@
+class Solution {
+public:
+    string convert(string s, int nRows) {
+        string *str=new string[nRows];
+        const int len=(int)s.length();
+        int rowNum=0;
+        int step=0;
+        if(nRows<=1||nRows>=len)
+            return s;
+        for(int i=0;i<len;i++){
+            str[rowNum].push_back(s[i]);
+            if(rowNum==0)
+                step=1;
+            else if(rowNum==nRows-1)
+                step=-1;
+            rowNum+=step;
+        }
+        s.clear();
+        for(int i=0;i<nRows;i++)
+            s.append(str[i]);
+        return s;
+    }
+};
