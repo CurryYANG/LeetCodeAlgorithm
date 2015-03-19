@@ -1,0 +1,25 @@
+class Solution {
+public:
+    vector<int> twoSum(vector<int> &numbers, int target) {
+        map<int,int> hashMap;
+        map<int,int>::iterator it;
+        vector<int> index;
+        int record=-1;
+        for (int i=0; i<numbers.size(); i++) {
+            if(hashMap.find(target-numbers[i])!=hashMap.end()){
+                record=hashMap[target-numbers[i]];
+                index.push_back(hashMap[target-numbers[i]]);
+            }
+            else
+                record=i+1;
+            hashMap[numbers[i]]=i+1;
+            index.push_back(i+1);
+            
+            if(hashMap.count(target-numbers[i])==1&&hashMap[numbers[i]]!=record)
+                break;
+            else
+                index.pop_back();
+        }
+        return index;
+    }
+};
