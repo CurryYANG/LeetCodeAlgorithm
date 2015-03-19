@@ -1,0 +1,17 @@
+int removeDuplicates(int A[], int n) {
+        int num=1;
+        int i=0;
+        int isHaveOne=-1;
+        if(n==0) num=0;
+        while(i<n-1){
+            if(A[i]==A[i+1])
+                isHaveOne++;
+            else isHaveOne=-1;
+            if(isHaveOne>0){
+                i++;
+                continue;
+            }
+            A[num++]=A[++i];
+        }
+        return num;
+    }
