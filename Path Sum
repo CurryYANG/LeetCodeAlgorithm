@@ -1,0 +1,32 @@
+/**
+ * Definition for binary tree
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+    int flag=0;
+public:
+    bool hasPathSum(TreeNode *root, int sum) {
+        if(root==NULL)
+            return false;
+        int totalVal=0;
+        traverseTree(root,totalVal,sum);
+        return flag==1?true:false;
+    }
+    
+    void traverseTree(TreeNode *node,int &val,int &sum){
+        if(node==NULL||flag==1) return ;
+        val+=node->val;
+        if(node->left==NULL&&node->right==NULL)
+            if(flag==0&&val==sum)
+                flag=1;
+        traverseTree(node->left,val,sum);
+        if(node->left) val-=(node->left->val);
+        traverseTree(node->right,val,sum);
+        if(node->right) val-=(node->right->val);
+    }
+};
