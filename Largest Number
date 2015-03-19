@@ -1,0 +1,16 @@
+class Solution {
+public:
+    string largestNumber(vector<int> &num) {
+        vector<string> transNum;
+        string largestNum="";
+        for(auto i:num)
+            transNum.push_back(to_string(i));
+        sort(transNum.begin(),transNum.end(),[](string a, string b){return a+b>b+a;});
+        for(auto s:transNum)
+            largestNum+=s;
+        
+        while(largestNum[0]=='0'&&largestNum.size()>1)
+            largestNum.erase(largestNum.begin());
+        return largestNum;
+    }
+};
