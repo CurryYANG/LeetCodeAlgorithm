@@ -1,0 +1,58 @@
+class Solution {
+public:
+    vector<int> spiralOrder(vector<vector<int> > &matrix) {
+    vector<int> orderedArr;
+    if(matrix.empty())
+        return orderedArr;
+    int rowLen=(int)matrix.size();
+    int columnLen=(int)matrix[0].size();
+    int rowPos=0;
+    int columnPos=0;
+    int rowBegin=0;
+    int rowEnd=rowLen;
+    cout<<rowEnd<<endl;
+    int columnBegin=0;
+    int columnEnd=columnLen;
+    
+    while(orderedArr.size()<rowLen*columnLen){
+        rowPos=rowBegin;
+        columnPos=columnBegin;
+        while(columnPos<columnEnd){
+            orderedArr.push_back(matrix[rowPos][columnPos]);
+            columnPos++;
+        }
+        columnPos--;
+        rowPos++;
+        
+        if(rowPos>=rowEnd)
+            break;
+        while(rowPos<rowEnd){
+            orderedArr.push_back(matrix[rowPos][columnPos]);
+            rowPos++;
+        }
+        rowPos--;
+        columnPos--;
+        
+        if(columnPos<columnBegin)
+            break;
+        while(columnPos>=columnBegin){
+            orderedArr.push_back(matrix[rowPos][columnPos]);
+            columnPos--;
+        }
+        columnPos++;
+        rowPos--;
+        
+        while(rowPos>=rowBegin+1){
+            orderedArr.push_back(matrix[rowPos][columnPos]);
+            rowPos--;
+        }
+        
+        rowBegin++;
+        columnBegin++;
+        rowEnd--;
+        columnEnd--;
+    }
+    
+    return orderedArr;
+}
+};
