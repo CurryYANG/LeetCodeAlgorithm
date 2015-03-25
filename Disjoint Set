@@ -1,0 +1,101 @@
+//
+//  main.cpp
+//  DisjointSet_Forest
+//
+//  Created by Yang Weifeng on 25/1/15.
+//  Copyright (c) 2015 Yang Weifeng. All rights reserved.
+//
+
+#include <iostream>
+#include <unordered_map>
+#include <vector>
+#include <stack>
+using namespace std;
+
+typedef struct node{
+    int rank;
+    int id;
+    int val;
+    node* parent;
+}node;
+
+//template <class T>
+class disjointForest {
+    unordered_map<int, node*> nodeSet;
+    int nodeNum;
+public:
+    disjointForest(unordered_map<int, node*> set,int count):nodeSet(set),nodeNum(count){}
+    
+    void makeSet(int id,int data){
+        node *newNode=new node;
+        newNode->rank=0;
+        newNode->id=id;
+        newNode->val=data;
+        newNode->parent=newNode;
+        nodeSet.insert(make_pair(id, newNode));
+    }
+    
+    node* findSet(int id){
+        unordered_map<int, node*>::iterator it;
+        if((it=nodeSet.find(id))==nodeSet.end())
+            return NULL;
+        
+        if(it->second!=(it->second)->parent)
+            (it->second)->parent=findSet(((it->second)->parent)->id);
+        return (it->second)->parent;
+    }
+    
+    void UNION(int xID,int yID){
+        node *xNode=findSet(xID);
+        node *yNode=findSet(yID);
+        cout<<xID<<"'s boss is:"<<xNode->parent->id<<endl;
+        cout<<yID<<"'s boss is:"<<yNode->parent->id<<endl;
+        if(xNode&&yNode)
+            linkNode(xNode, yNode);
+        cout<<xID<<" and "<<yID<<" union scccessfully!"<<endl;
+        cout<<"The tree root is: "<<xNode->parent->id<<endl;
+    }
+    
+    void linkNode(node *x,node *y){
+            
+        if(x->rank>y->rank)
+            y->parent=x;
+        else{
+            x->parent=y;
+            if(x->rank==y->rank)
+                y->rank++;
+        }
+    }
+    
+    ~disjointForest(){
+        unordered_map<int, node*>::iterator it;
+        for (it=nodeSet.begin();it!=nodeSet.end();it++) {
+            free(it->second);
+        }
+        
+    }
+};
+
+
+int main(int argc, const char * argv[]) {
+    // insert code here...
+    unordered_map<int, node*> nodeMap;
+    int nodeCount=0;
+    disjointForest *unionSet=new disjointForest(nodeMap,nodeCount);
+    
+    cin>>nodeCount;
+    unionSet->makeSet(1, 5);
+    unionSet->makeSet(2, 3);
+    unionSet->makeSet(3, 6);
+    unionSet->makeSet(4, 2);
+    
+    unionSet->UNION(1, 2);
+    unionSet->UNION(3, 4);
+    unionSet->UNION(1, 4);
+    
+    unionSet->findSet(3);
+    
+    free(unionSet);
+    std::cout << "Hello, World!\n";
+    return 0;
+}
